@@ -37,24 +37,30 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
       const response = await api.get(`products/${productId}`);
       const product = response.data;
 
-      const productExists = cart.filter(product => product.id === productId);
-      console.log('product exists?')
-      console.log(productExists);
+      const productExists = cart.find(product => product.id === productId);
 
-      if(productExists.length === 0) {
+      if(productExists) {
+        const adjustedCart = cart.map(product => {
+          if(product.id === productId) {
+            product.amount+=1;
+            return product;
+          } else {
+            return product;
+          }
+        });
+        
+        localStorage.setItem('@RocketShoes:cart', JSON.stringify(adjustedCart));
+        setCart(adjustedCart);
+      } else {
         const newCart = [...cart, {...product, amount: 1}];
         localStorage.setItem('@RocketShoes:cart', JSON.stringify(newCart));
         setCart(newCart)
         return;
       }
 
-      if(productExists) {
-        return;
-      }
-
-      const newCart = [...cart, {...product, amount: 1}];
-      localStorage.setItem('@RocketShoes:cart', JSON.stringify(newCart));
-      setCart(newCart)
+      // const newCart = [...cart, {...product, amount: 1}];
+      // localStorage.setItem('@RocketShoes:cart', JSON.stringify(newCart));
+      // setCart(newCart)
       
     } catch {
       // TODO
