@@ -57,10 +57,6 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
         setCart(newCart)
         return;
       }
-
-      // const newCart = [...cart, {...product, amount: 1}];
-      // localStorage.setItem('@RocketShoes:cart', JSON.stringify(newCart));
-      // setCart(newCart)
       
     } catch {
       // TODO
